@@ -14,5 +14,6 @@ cargo run
 ```
 
 ## Tests
-
-Tests yet to be (learned and) done.
+```
+cargo test
+```
