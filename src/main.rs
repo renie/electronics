@@ -1,38 +1,29 @@
 use std::io::{self};
 use std::{fs, process};
-use std::path::Path;
+mod utils;
+
 
 // TODO: add tests after refactoring
 fn main() -> io::Result<()> {
-    // TODO: create getUserResponseFor(question:String)->Result<String (trimmed),Err (if not informed)>
-    println!("Where is your circuit file?");
-    let mut user_input  = String::new();
-    let stdin = io::stdin();
-    let _ = stdin.read_line(&mut user_input);
-    // TODO: create removeCRLF(&mut self)
-    let len = user_input.trim_end_matches(&['\r', '\n'][..]).len();
-    user_input.truncate(len);
 
+    let file_name = match utils::user_interaction::get_user_response_for(&"Where is your circuit file?") {
+        Ok(file_name_input) => file_name_input,
+        Err(message) => {
+            eprintln!("{} \nExiting...", message);
+            process::exit(1)
+        } 
+    };
 
-    if user_input.is_empty() {
-        eprintln!("No file informed. Exiting...");
-        process::exit(1)
+    match utils::paths::check_path_validity(&file_name) {
+        Ok(_) => {
+            let contents = fs::read_to_string(file_name)
+                .expect("Something went wrong reading the file. Exiting..."); 
+            println!("File {}", contents);
+            Ok(())
+        },
+        Err(message) => {
+            eprintln!("{} \nExiting...", message);
+            process::exit(1)
+        } 
     }
-
-
-    // TODO: create checkPathValidity(path:String):Result<Ok(),Err (File not found)>
-    let path = Path::new(&user_input);
-    if !path.is_file() {
-        eprintln!("File not found. Exiting...");
-        process::exit(1)
-    }
-
-
-    let contents = fs::read_to_string(user_input)
-        .expect("Something went wrong reading the file. Exiting..."); 
-
-
-    println!("File {}", contents);
-
-    Ok(())
 }

@@ -1,4 +1,4 @@
-# Eletronics
+# Electronics
 
 (Warning: this project is not meant to be used in production, just for Rust studies)
 
