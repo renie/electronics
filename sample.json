@@ -1,0 +1,19 @@
+[
+    {
+        "id": 0,
+        "nextComponents": [1],
+        "name": "AND",
+        "inputs": [
+            1,1
+        ]
+    },
+    {
+        "id": 1,
+        "nextComponents": [],
+        "name": "OR",
+        "inputsMap": {
+            "0": 0,
+            "1": 0
+        }
+    }
+]
