@@ -52,4 +52,8 @@ mod tests {
             Err(_) => Ok(())
         }
     }    
+
+    // TODO: Still don' t know how to test get_circuit_filename_from_user function
+    // The test will have to interact with read_line, that need to be solved to be able to test
+    // that function
 }
