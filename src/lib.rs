@@ -1,7 +1,11 @@
 use std::fs;
-mod utils;
 
-pub fn run() -> Result<String, &'static str> {    
+mod utils;
+mod models;
+
+use models::gate::Gate;
+
+pub fn run() -> Result<Vec<Gate>, &'static str> {
     let filename = match get_circuit_filename_from_user() {
         Ok(name) => name,
         Err(message) => {
@@ -11,8 +15,14 @@ pub fn run() -> Result<String, &'static str> {
     run_with_params(filename)
 }
 
-pub fn run_with_params(filename: String) -> Result<String, &'static str> {
-    get_file_contents(filename)
+pub fn run_with_params(filename: String) -> Result<Vec<Gate>, &'static str> {
+    match get_file_contents(filename) {
+        Ok(contents) => match Gate::parse_json_list(contents.as_str()) {
+            Ok(list) => Ok(list),
+            Err(_) => Err("Error while parsing JSON.")
+        },
+        Err(message) => Err(message)
+    }
 }
 
 fn get_circuit_filename_from_user() -> Result<String, &'static str> {
@@ -26,7 +36,8 @@ fn get_file_contents(filename: String) -> Result<String, &'static str> {
     match utils::paths::check_path_validity(&filename) {
         Ok(_) => {
             let contents = fs::read_to_string(filename)
-                .expect("Something went wrong reading the file. Exiting..."); 
+                .expect("Something went wrong reading the file. Exiting...");
+
             return Ok(contents)
         },
         Err(message) => Err(message)

@@ -1,17 +1,19 @@
 [
     {
         "id": 0,
-        "nextComponents": [1],
+        "next_components": [1],
         "name": "AND",
         "inputs": [
             1,1
-        ]
+        ],
+        "inputs_map": {}
     },
     {
         "id": 1,
-        "nextComponents": [],
+        "next_components": [],
         "name": "OR",
-        "inputsMap": {
+        "inputs": [],
+        "inputs_map": {
             "0": 0,
             "1": 0
         }
