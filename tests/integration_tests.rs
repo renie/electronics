@@ -11,7 +11,7 @@ fn gets_valid_content() -> Result<(), String> {
 #[test]
 fn gets_content_invalid_file() -> Result<(), String> {
     match run_with_params(String::from("bla.txt")) {
-        Ok(ret) => Err(format!("Running with filename as paramater. Should NOT go all good. Returned: {} ", ret)),
+        Ok(_) => Err(format!("Running with filename as paramater. Should NOT go all good.")),
         Err(_) => Ok(())
     }
 }
