@@ -14,3 +14,8 @@ pub fn get_user_response_for(question: &str) -> Result<String, &'static str> {
     
     Ok(trimmed_input)
 }
+
+
+// TODO: Still don't know how to test get_user_response_for function
+// The test will have to interact with read_line, that need to be solved to be able to test
+// that function
