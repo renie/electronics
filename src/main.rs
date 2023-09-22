@@ -5,6 +5,7 @@ use electronics::run;
 fn main() {
     match run() {
         Ok(contents) => {
+            print!("Result: {}", contents.first().unwrap().process_result());
             dbg!(contents);
         },
         Err(message) => {
