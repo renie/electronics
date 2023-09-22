@@ -5,7 +5,7 @@ use electronics::run;
 fn main() {
     match run() {
         Ok(contents) => {
-            println!("Gate id {} has name {}", contents.last().unwrap().id, contents.last().unwrap().name);
+            dbg!(contents);
         },
         Err(message) => {
             eprintln!("{}", message);

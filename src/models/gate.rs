@@ -1,25 +1,27 @@
 use serde::{Serialize, Deserialize};
 use serde_json::{Map, Value, Error};
-use std::fmt::Display;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub enum GateType {
+   AND, OR
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Gate {
     pub id: u8,
-    pub name: String,
+    pub name: GateType,
     pub next_components: Vec<u8>,
     pub inputs: Vec<u8>,
     pub inputs_map: Map<String, Value>
 }
 
-impl Display for Gate {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Gate:\n\tid: {}\n\tname: {}", self.id, self.name)
-    }
-}
-
 impl Gate {
     pub fn parse_json_list(json_list: &str) -> Result<Vec<Gate>, Error> {
         serde_json::from_str(json_list)
+    }
+
+    pub fn process_result(&self) -> bool {
+        return true
     }
 }
 
@@ -55,9 +57,9 @@ mod tests {
 
         let list: Vec<Gate> = Gate::parse_json_list(data.to_string().as_str()).expect("Error parsing JSON");
 
-        assert_eq!("OR", list.last().unwrap().name)
+        assert_eq!(GateType::OR, list.last().unwrap().name)
     }
-    
+
     #[test]
     fn parse_json_list_invalid () -> Result<(), &'static str> {
         let data = r#"[
