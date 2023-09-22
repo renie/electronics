@@ -21,16 +21,18 @@ impl Gate {
     }
 
     pub fn process_result(&self) -> bool {
+        if self.inputs.len() < 2 {
+            return false
+        }
+
+        let prepared_inputs = self.prepare_inputs();
+
         match self.name {
             GateType::AND => {
-                if self.inputs.len() < 2 {
-                    return false
-                }
-                let prepared_inputs = self.prepare_inputs();
                 return prepared_inputs[0] & prepared_inputs[1]
             },
             GateType::OR => {
-                return true
+                return prepared_inputs[0] | prepared_inputs[1]
             }
         }
     }
@@ -163,6 +165,67 @@ mod tests {
         assert_eq!(false, list1.first().unwrap().process_result());
         assert_eq!(false, list2.first().unwrap().process_result());
         assert_eq!(false, list3.first().unwrap().process_result());
+        assert_eq!(true, list4.first().unwrap().process_result());
+    }
+    
+    #[test]
+    fn process_result_orgate () {
+        let data1 = json!([
+            {
+                "id": 0,
+                "next_components": [],
+                "name": "OR",
+                "inputs": [
+                    0,0
+                ],
+                "inputs_map": {}
+            }
+        ]);
+
+        let data2 = json!([
+            {
+                "id": 0,
+                "next_components": [],
+                "name": "OR",
+                "inputs": [
+                    1,0
+                ],
+                "inputs_map": {}
+            }
+        ]);
+
+        let data3 = json!([
+            {
+                "id": 0,
+                "next_components": [],
+                "name": "OR",
+                "inputs": [
+                    0,1
+                ],
+                "inputs_map": {}
+            }
+        ]);
+
+        let data4 = json!([
+            {
+                "id": 0,
+                "next_components": [],
+                "name": "OR",
+                "inputs": [
+                    1,1
+                ],
+                "inputs_map": {}
+            }
+        ]);
+
+        let list1: Vec<Gate> = Gate::parse_json_list(data1.to_string().as_str()).expect("Error parsing JSON");
+        let list2: Vec<Gate> = Gate::parse_json_list(data2.to_string().as_str()).expect("Error parsing JSON");
+        let list3: Vec<Gate> = Gate::parse_json_list(data3.to_string().as_str()).expect("Error parsing JSON");
+        let list4: Vec<Gate> = Gate::parse_json_list(data4.to_string().as_str()).expect("Error parsing JSON");
+
+        assert_eq!(false, list1.first().unwrap().process_result());
+        assert_eq!(true, list2.first().unwrap().process_result());
+        assert_eq!(true, list3.first().unwrap().process_result());
         assert_eq!(true, list4.first().unwrap().process_result());
     }
 }
