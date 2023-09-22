@@ -19,7 +19,10 @@ pub fn run_with_params(filename: String) -> Result<Vec<Gate>, &'static str> {
     match get_file_contents(filename) {
         Ok(contents) => match Gate::parse_json_list(contents.as_str()) {
             Ok(list) => Ok(list),
-            Err(_) => Err("Error while parsing JSON.")
+            Err(e) => {
+                dbg!(e);
+                Err("Error while parsing JSON.")
+            }
         },
         Err(message) => Err(message)
     }

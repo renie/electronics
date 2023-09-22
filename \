@@ -104,7 +104,7 @@ mod tests {
             Err(_)=> Ok(())
         }
     }
-
+    
     #[test]
     fn process_result_andgate () {
         let data1 = json!([
